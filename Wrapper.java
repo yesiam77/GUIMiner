@@ -40,11 +40,11 @@ import javax.swing.event.HyperlinkListener;
 public class Wrapper {
 	
 	private static double version = 1.3;
-	private static boolean compileWithMiners = true;
+	private static boolean compileWithMiners = false;
 	private static String OS = "";
 	private static String homeDir = "";
 	private static String selectedMiner = "";
-	private static ArrayList<String> knownMiners = new ArrayList<String>();
+	private static ArrayList<Miner> knownMiners = new ArrayList<Miner>();
 	private static DefaultListModel<String> availableMiners = new DefaultListModel<String>();
 
 	private static DefaultListModel<String> availableGPUs = new DefaultListModel<String>();
@@ -102,14 +102,14 @@ public class Wrapper {
 			OS = "Mac";
 			homeDir = System.getenv("user.home");
 			System.setProperty("apple.eawt.quitStrategy","CLOSE_ALL_WINDOWS");
-			JOptionPane.showMessageDialog(gui,"This program does not work on Mac, Sorry!");
+			JOptionPane.showMessageDialog(getGUI(),"This program does not work on Mac, Sorry!");
 			System.out.println("Goodbye");
 			System.exit(0);
 		}
 		
-		knownMiners.add("ccminer");
-		knownMiners.add("cryptodredge");
-		knownMiners.add("z-enemy");
+		knownMiners.add(new Miner("ccminer",ccMinerAlgos));
+		knownMiners.add(new Miner("cryptodredge",cryptodredgeAlgos));
+		knownMiners.add(new Miner("z-enemy",zenemyAlgos));
 			
 		if(compileWithMiners)
 			System.out.println("This version of GUIMiner was compiled with miners");
@@ -129,12 +129,12 @@ public class Wrapper {
 					if(!input.contains("Name") && !input.isEmpty())
 						availableGPUs.addElement(input);
 				
-				gui.getGPUsAvailableList().setModel(availableGPUs);
+				getGUI().getGPUsAvailableList().setModel(availableGPUs);
 			}
 			else
 			{
-				gui.getGPUsAvailableList().setModel(availableGPUs);
-				JOptionPane.showMessageDialog(gui,"The auto-populate feature for the GPU list does not work on Linux.\n"
+				getGUI().getGPUsAvailableList().setModel(availableGPUs);
+				JOptionPane.showMessageDialog(getGUI(),"The auto-populate feature for the GPU list does not work on Linux.\n"
 						+ " Try using the Advanced Commandline Options box to specify the devices to use via the -d argument.\n"
 						+ " More information about this argument can be found in the help tab.");
 			}
@@ -144,11 +144,11 @@ public class Wrapper {
 			ArrayList<String> save = Wrapper.readFile("save.dat");
 			if(save.size() >= 5)
 			{
-				gui.getAlgoCombobox().setSelectedItem(save.get(0).replaceAll("#",""));
-				gui.getPoolURLField().setText(save.get(1).replaceAll("#",""));
-				gui.getUsernameField().setText(save.get(2).replaceAll("#",""));
-				gui.getPasswordField().setText(save.get(3).replaceAll("#",""));
-				gui.getAdvCMDField().setText(save.get(4).replaceAll("#",""));
+				getGUI().getAlgoCombobox().setSelectedItem(save.get(0).replaceAll("#",""));
+				getGUI().getPoolURLField().setText(save.get(1).replaceAll("#",""));
+				getGUI().getUsernameField().setText(save.get(2).replaceAll("#",""));
+				getGUI().getPasswordField().setText(save.get(3).replaceAll("#",""));
+				getGUI().getAdvCMDField().setText(save.get(4).replaceAll("#",""));
 					
 				algo = save.get(0).replaceAll("#","");
 				poolURL = save.get(1).replaceAll("#","");
@@ -171,7 +171,6 @@ public class Wrapper {
 		} catch (IOException e) {}
 	}
 	
-	//TODO Needs adjusting after adding new miners
 	public static void startMiner()
 	{
 		try
@@ -181,41 +180,16 @@ public class Wrapper {
 			
 			if(availableMiners.size() > 1)
 			{
-				
-				if(!checkIfContains(ccMinerAlgos,algo))
-					for(int k = 0; k < availableMiners.size(); k++)
-					{
-						if(availableMiners.getElementAt(k).toLowerCase().contains("ccminer"))
-							availableMiners.removeElementAt(k);
-					}
-				
-				if(!checkIfContains(cryptodredgeAlgos,algo))
-					for(int k = 0; k < availableMiners.size(); k++)
-					{
-						if(availableMiners.getElementAt(k).toLowerCase().contains("cryptodredge"))
-							availableMiners.removeElementAt(k);
-					}
-				
-				/*if(!checkIfContains(claymoreAlgos,algo))
-					for(int k = 0; k < availableMiners.size(); k++)
-					{
-						if(availableMiners.getElementAt(k).toLowerCase().contains("claymore"))
-							availableMiners.removeElementAt(k);
-					}
-				*/
-				
-				if(!checkIfContains(zenemyAlgos,algo))
-					for(int k = 0; k < availableMiners.size(); k++)
-					{
-						if(availableMiners.getElementAt(k).toLowerCase().contains("z-enemy"))
-							availableMiners.removeElementAt(k);
-					}
-				
+				for(int j = 0; j < knownMiners.size(); j++)
+					if(!checkIfContains(knownMiners.get(j).getAlgos(),algo))
+						for(int k = 0; k < availableMiners.size(); k++)
+							if(availableMiners.getElementAt(k).toLowerCase().contains(knownMiners.get(j).getShortName()))
+								availableMiners.removeElementAt(k);
 				
 				JList<String> list = new JList<String>();
 				list.setModel(availableMiners);
 				list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				JOptionPane.showMessageDialog(gui,list,"Choose a miner",JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(getGUI(),list,"Choose a miner",JOptionPane.DEFAULT_OPTION);
 				
 				if(list.getSelectedIndex() > -1)
 					selectedMiner = list.getSelectedValue();
@@ -225,17 +199,16 @@ public class Wrapper {
 			else if(availableMiners.size() == 1)
 				selectedMiner = availableMiners.get(0);
 			else
-			{
 				if(compileWithMiners)
-					JOptionPane.showMessageDialog(gui,"No compatible miner was found for algo \""+algo+"\"\nThis is a bug, please report this!");
+					JOptionPane.showMessageDialog(getGUI(),"No compatible miner was found for algo \""+algo+"\"\nThis is a bug, please report this!");
 				else
-					JOptionPane.showMessageDialog(gui,"No compatible miner was found for algo \""+algo+"\"");
-			}
+					JOptionPane.showMessageDialog(getGUI(),"No compatible miner was found for algo \""+algo+"\"");
 			
 			if(compileWithMiners)
 				if(selectedMiner.contains("(Prepackaged)"))
 					extractFile(selectedMiner);
 			
+			//TODO adjust these after adding new miners
 			System.out.println("Attempting to start "+selectedMiner);
 			if(selectedMiner.toLowerCase().contains("ccminer"))
 			{
@@ -328,7 +301,7 @@ public class Wrapper {
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(gui,"Unrecognized Miner, Try using CCMiner, CryptoDredge or Z-Enemy.");
+				JOptionPane.showMessageDialog(getGUI(),"Unrecognized Miner, Try using CCMiner, CryptoDredge or Z-Enemy.");
 				return;
 			}
 						        				
@@ -337,7 +310,7 @@ public class Wrapper {
 			{
 	        	Wrapper.writeConsole("Starting "+selectedMiner+"...");
 				writeConsole(temp);
-				gui.getStartMinerButton().setText("Stop Miner");
+				getGUI().getStartMinerButton().setText("Stop Miner");
 				isMinerRunning = true;
 			}
 			else
@@ -362,6 +335,7 @@ public class Wrapper {
 					
 					try
 					{
+						//TODO adjust these after adding new miners
 						System.out.println("Starting monitoring thread");
 						while((input = minerOutput.readLine()) != null && isMinerRunning)
 						{
@@ -659,10 +633,10 @@ public class Wrapper {
 									}
 								}
 								
-								gui.getAlgorithmField().setText(algo);
-								gui.getTotalGPUsHashingField().setText(String.valueOf(gpuMonitor.size()));
-								gui.getAvgTempField().setText(String.valueOf((double)avgTemp/(double)gpuMonitor.size()));
-								gui.getTotalHashrateField().setText(round(totalHashrate,2)+suffix);
+								getGUI().getAlgorithmField().setText(algo);
+								getGUI().getTotalGPUsHashingField().setText(String.valueOf(gpuMonitor.size()));
+								getGUI().getAvgTempField().setText(String.valueOf((double)avgTemp/(double)gpuMonitor.size()));
+								getGUI().getTotalHashrateField().setText(round(totalHashrate,2)+suffix);
 							}
 							
 							if(!input.isEmpty())
@@ -720,7 +694,7 @@ public class Wrapper {
 		{
 			System.out.println("Stopping "+selectedMiner);
 			Wrapper.writeConsole("Stopping "+selectedMiner+"...");
-			gui.getStartMinerButton().setText("Start Miner");
+			getGUI().getStartMinerButton().setText("Start Miner");
 			selectedMiner = "";
 			
 			minerProcess.destroy();
@@ -749,7 +723,7 @@ public class Wrapper {
 		for(int k = 0; k < results.size(); k++)
 		{
 			for(int j = 0; j < knownMiners.size(); j++)
-			if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).replaceAll("-","")))
+			if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).getShortName().replaceAll("-","")))
 			{
 				availableMiners.addElement(results.get(k));
 			}
@@ -820,16 +794,16 @@ public class Wrapper {
 		if(availableMiners.size() == 0)
 		{
 			System.out.println(" - No compatible miners found");
-			JOptionPane.showMessageDialog(gui,"Unable to find a compatible miner either prepackaged or in the same directory as this GUI.\n"
+			JOptionPane.showMessageDialog(getGUI(),"Unable to find a compatible miner either prepackaged or in the same directory as this GUI.\n"
 					+ "Compatible miners include: CCMiner, CryptoDredge and Z-Enemy");
 			System.out.println("Goodbye");
 			System.exit(0);
 		}
 		else
 		{
-			int save = gui.getAlgoCombobox().getSelectedIndex();
-			gui.getAlgoCombobox().setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
-			gui.getAlgoCombobox().setSelectedIndex(save);
+			int save = getGUI().getAlgoCombobox().getSelectedIndex();
+			getGUI().getAlgoCombobox().setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
+			getGUI().getAlgoCombobox().setSelectedIndex(save);
 		}
 	}
 	
@@ -897,14 +871,13 @@ public class Wrapper {
 			        }
 			    });
 				
-				JOptionPane.showMessageDialog(gui,ep);
+				JOptionPane.showMessageDialog(getGUI(),ep);
 			}
 			else
 				System.out.println(" - This is already the most recent version of GUIMiner");
 		}
 	}
 	
-	//TODO add all supported miners here
 	public static String[] getFullAlgoList()
 	{
 		ArrayList<String> fullAlgoList = new ArrayList<String>();
@@ -913,14 +886,9 @@ public class Wrapper {
 		for(int k = 0; k < availableMiners.size(); k++)
 		{
 			System.out.println(" - Found: "+availableMiners.getElementAt(k).toLowerCase());
-			if(availableMiners.getElementAt(k).toLowerCase().contains("ccminer"))
-				Collections.addAll(fullAlgoList,ccMinerAlgos);
-			//if(availableMiners.getElementAt(k).toLowerCase().contains("claymore"))
-			//	Collections.addAll(fullAlgoList,claymoreAlgos);
-			if(availableMiners.getElementAt(k).toLowerCase().contains("cryptodredge"))
-				Collections.addAll(fullAlgoList,cryptodredgeAlgos);
-			if(availableMiners.getElementAt(k).toLowerCase().contains("z-enemy"))
-				Collections.addAll(fullAlgoList,zenemyAlgos);
+			for(int j = 0; j < knownMiners.size(); j++)
+				if(availableMiners.getElementAt(k).toLowerCase().contains(knownMiners.get(j).getShortName()))
+					Collections.addAll(fullAlgoList,knownMiners.get(j).getAlgos());
 		}
 
 		temp.addAll(fullAlgoList);
@@ -940,8 +908,8 @@ public class Wrapper {
 		if(console.length() > consoleMaxLength)
 			console = console.substring(console.indexOf("\n")+1);
 		
-		gui.getConsoleTextArea().setText(console);
-		gui.getConsoleTextArea().setCaretPosition(gui.getConsoleTextArea().getDocument().getLength());
+		getGUI().getConsoleTextArea().setText(console);
+		getGUI().getConsoleTextArea().setCaretPosition(getGUI().getConsoleTextArea().getDocument().getLength());
 	}
 	
 	public static void writeMonitor(String newLine)
@@ -953,8 +921,8 @@ public class Wrapper {
 		if(monitor.length() > monitorMaxLength)
 			monitor = monitor.substring(monitor.indexOf("\n")+1);
 		
-		gui.getMonitorTextArea().setText(monitor);
-		gui.getMonitorTextArea().setCaretPosition(gui.getMonitorTextArea().getDocument().getLength());
+		getGUI().getMonitorTextArea().setText(monitor);
+		getGUI().getMonitorTextArea().setCaretPosition(getGUI().getMonitorTextArea().getDocument().getLength());
 	}
 	
 	public static boolean checkIfContains(String[] myStringArray, String stringToLocate) {
@@ -1068,11 +1036,6 @@ public class Wrapper {
 		devices = temp.substring(0,temp.length()-1);
 	}
 	
-	public static String getDevices()
-	{
-		return devices;
-	}
-	
 	public static GUI getGUI()
 	{
 		return gui;
@@ -1083,19 +1046,9 @@ public class Wrapper {
 		password = newPassword;
 	}
 	
-	public static String getPassword()
-	{
-		return password;
-	}
-	
 	public static void setUsername(String newUsername)
 	{
 		username = newUsername;
-	}
-	
-	public static String getUsername()
-	{
-		return username;
 	}
 	
 	public static void setPoolURL(String newPoolURL)
@@ -1103,29 +1056,14 @@ public class Wrapper {
 		poolURL = newPoolURL;
 	}
 	
-	public static String getPoolURL()
-	{
-		return poolURL;
-	}
-	
 	public static void setAlgo(String newAlgo)
 	{
 		algo = newAlgo;
 	}
 	
-	public static String getAlgo()
-	{
-		return algo;
-	}
-	
 	public static void setAdvCMDText(String newAdvCMD)
 	{
 		advCMDText = newAdvCMD;
-	}
-	
-	public static String getAdvCMDText()
-	{
-		return advCMDText;
 	}
 	
 	public static boolean isMinerRunning()
@@ -1136,11 +1074,19 @@ public class Wrapper {
 
 class Miner
 {
-	String executableName = "";
+	String shortName = "";
 	String[] algos = new String[0];
 	
-	Miner()
-	{
-		
+	Miner(String shortName, String[] algos) {
+		this.shortName = shortName;
+		this.algos = algos;
+	}
+	
+	public String getShortName() {
+		return shortName;
+	}
+	
+	public String[] getAlgos() {
+		return algos;
 	}
 }
