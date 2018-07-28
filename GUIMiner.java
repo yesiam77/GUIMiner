@@ -16,6 +16,7 @@ public class GUIMiner {
 			public void run() {
 				try
                 {	
+					System.out.println("Hello");
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
                     window.setTitle("GUI Miner");
@@ -51,6 +52,7 @@ public class GUIMiner {
                     		Wrapper.clearFile("settings.dat");
                     		//Wrapper.addToFile("settings.dat",algo+";");
                     		
+                    		System.out.println("Saved run data");
                     		System.out.println("Goodbye");
                     		System.exit(0);
                         }

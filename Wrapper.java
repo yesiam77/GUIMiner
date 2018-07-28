@@ -40,7 +40,7 @@ import javax.swing.event.HyperlinkListener;
 public class Wrapper {
 	
 	private static double version = 1.3;
-	private static boolean compileWithMiners = false;
+	private static boolean compileWithMiners = true;
 	private static String OS = "";
 	private static String homeDir = "";
 	private static String selectedMiner = "";
@@ -103,34 +103,21 @@ public class Wrapper {
 			homeDir = System.getenv("user.home");
 			System.setProperty("apple.eawt.quitStrategy","CLOSE_ALL_WINDOWS");
 			JOptionPane.showMessageDialog(gui,"This program does not work on Mac, Sorry!");
+			System.out.println("Goodbye");
 			System.exit(0);
 		}
-				
-		ArrayList<String> save = Wrapper.readFile("save.dat");
-		if(save.size() >= 5)
-		{
-			gui.getAlgoCombobox().setSelectedItem(save.get(0).replaceAll("#",""));
-			gui.getPoolURLField().setText(save.get(1).replaceAll("#",""));
-			gui.getUsernameField().setText(save.get(2).replaceAll("#",""));
-			gui.getPasswordField().setText(save.get(3).replaceAll("#",""));
-			gui.getAdvCMDField().setText(save.get(4).replaceAll("#",""));
-				
-			algo = save.get(0).replaceAll("#","");
-			poolURL = save.get(1).replaceAll("#","");
-			username = save.get(2).replaceAll("#","");
-			password = save.get(3).replaceAll("#","");
-			advCMDText = save.get(4).replaceAll("#","");
-		}
 		
-		ArrayList<String> settings = Wrapper.readFile("settings.dat");
-		if(settings.size() >= 5)
-		{
-			//TODO
-			//algo = save.get(0).replaceAll("#","");
-		}
-		
+		knownMiners.add("ccminer");
+		knownMiners.add("cryptodredge");
+		knownMiners.add("z-enemy");
+			
+		if(compileWithMiners)
+			System.out.println("This version of GUIMiner was compiled with miners");
+		else
+			System.out.println("This version of GUIMiner was compiled without miners");
+				
 		try
-		{
+		{	
 			//TODO find linux and mac equivalents of the window cmd for finding system GPUs
 			if(OS.equals("Windows"))
 			{
@@ -152,16 +139,34 @@ public class Wrapper {
 						+ " More information about this argument can be found in the help tab.");
 			}
 			
-			checkForUpdate();
-			
-			if(!compileWithMiners)
-			{
-				knownMiners.add("ccminer");
-				knownMiners.add("cryptodredge");
-				knownMiners.add("z-enemy");
-			}
-						
 			checkAvailableMiners();
+				
+			ArrayList<String> save = Wrapper.readFile("save.dat");
+			if(save.size() >= 5)
+			{
+				gui.getAlgoCombobox().setSelectedItem(save.get(0).replaceAll("#",""));
+				gui.getPoolURLField().setText(save.get(1).replaceAll("#",""));
+				gui.getUsernameField().setText(save.get(2).replaceAll("#",""));
+				gui.getPasswordField().setText(save.get(3).replaceAll("#",""));
+				gui.getAdvCMDField().setText(save.get(4).replaceAll("#",""));
+					
+				algo = save.get(0).replaceAll("#","");
+				poolURL = save.get(1).replaceAll("#","");
+				username = save.get(2).replaceAll("#","");
+				password = save.get(3).replaceAll("#","");
+				advCMDText = save.get(4).replaceAll("#","");
+				System.out.println("Loaded saved data");
+			}
+			
+			ArrayList<String> settings = Wrapper.readFile("settings.dat");
+			if(settings.size() >= 5)
+			{
+				//TODO
+				//algo = save.get(0).replaceAll("#","");
+			}
+			
+			checkForUpdate();
+			System.out.println("Waiting for user input");
 			
 		} catch (IOException e) {}
 	}
@@ -172,6 +177,7 @@ public class Wrapper {
 		try
 		{
 			checkAvailableMiners();
+			System.out.println("Waiting for user input");
 			
 			if(availableMiners.size() > 1)
 			{
@@ -230,6 +236,7 @@ public class Wrapper {
 				if(selectedMiner.contains("(Prepackaged)"))
 					extractFile(selectedMiner);
 			
+			System.out.println("Attempting to start "+selectedMiner);
 			if(selectedMiner.toLowerCase().contains("ccminer"))
 			{
 				String args = "-a "+algo+" -o "+poolURL+" -u "+username;
@@ -355,6 +362,7 @@ public class Wrapper {
 					
 					try
 					{
+						System.out.println("Starting monitoring thread");
 						while((input = minerOutput.readLine()) != null && isMinerRunning)
 						{
 							if(selectedMiner.toLowerCase().contains("ccminer"))
@@ -662,6 +670,7 @@ public class Wrapper {
 						}
 						
 					} catch (IOException e) {}
+					System.out.println("Killed monitoring thread");
 				}
 				
 				class GPU
@@ -709,6 +718,7 @@ public class Wrapper {
 	{
 		if(isMinerRunning)
 		{
+			System.out.println("Stopping "+selectedMiner);
 			Wrapper.writeConsole("Stopping "+selectedMiner+"...");
 			gui.getStartMinerButton().setText("Start Miner");
 			selectedMiner = "";
@@ -722,6 +732,8 @@ public class Wrapper {
 	//TODO adjust after adding new miners
 	public static void checkAvailableMiners() throws IOException
 	{
+		System.out.println("Refreshing list of available miners");
+		
 		selectedMiner = "";
 		availableMiners.clear();
 		
@@ -742,7 +754,7 @@ public class Wrapper {
 				availableMiners.addElement(results.get(k));
 			}
 		}
-		
+				
 		if(OS.equals("Windows"))
 		{
 			boolean nVidia = false;
@@ -807,81 +819,89 @@ public class Wrapper {
 		
 		if(availableMiners.size() == 0)
 		{
+			System.out.println(" - No compatible miners found");
 			JOptionPane.showMessageDialog(gui,"Unable to find a compatible miner either prepackaged or in the same directory as this GUI.\n"
 					+ "Compatible miners include: CCMiner, CryptoDredge and Z-Enemy");
+			System.out.println("Goodbye");
 			System.exit(0);
 		}
 		else
 		{
+			int save = gui.getAlgoCombobox().getSelectedIndex();
 			gui.getAlgoCombobox().setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
+			gui.getAlgoCombobox().setSelectedIndex(save);
 		}
 	}
 	
 	public static void checkForUpdate()
 	{
+		String response = "";
+		
 		try
 		{
+			System.out.println("Looking for new version of GUIMiner");
 			URL url = new URL("https://api.github.com/repos/yesiam77/GUIMiner/releases/latest");
 			URLConnection conn = url.openConnection();
 			InputStream is = conn.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			
-			String response = "";
 			String input = "";
 			while ((input = br.readLine()) != null) {
 				response += input+"\n";
 			}
 			is.close();
-			
-			if(response.contains("\"tag_name\""))
-			{
-				String versionStr = response.substring(response.indexOf("\"tag_name\"")+12);
-				versionStr = versionStr.substring(0,versionStr.indexOf(","));
-				double newVersion = Double.parseDouble(versionStr.replaceAll("[^0-9\\.]+",""));
-				
-				if(newVersion > version)
-				{
-					JLabel label = new JLabel();
-				    Font font = label.getFont();
-
-				    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
-				    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
-				    style.append("font-size:" + font.getSize() + "pt;");
-
-				    JEditorPane ep = new JEditorPane("text/html","<html><body style=\"" + style + "\">"
-				            + "There is a new version of the miner available <a href=\"https://github.com/yesiam77/GUIMiner/releases\">here</a>."
-				            + "</body></html>");
-
-				    ep.setEditable(false);
-				    ep.setBackground(label.getBackground());
-				    ep.addHyperlinkListener(new HyperlinkListener()
-				    {
-				        @Override
-				        public void hyperlinkUpdate(HyperlinkEvent e)
-				        {
-				        	if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
-				            if(Desktop.isDesktopSupported())
-				            {
-				                Desktop desktop = Desktop.getDesktop();
-				                try
-				                {
-				                    desktop.browse(new URI("https://github.com/yesiam77/GUIMiner/releases"));
-				                    
-				                } catch (IOException | URISyntaxException e1) {
-				                    e1.printStackTrace();
-				                }
-				            }
-				        }
-				    });
-					
-					JOptionPane.showMessageDialog(gui,ep);
-				}
-			}
 				
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(" - Unable to connect to Github API");
 		}
+		
+		if(response.contains("\"tag_name\""))
+		{
+			String versionStr = response.substring(response.indexOf("\"tag_name\"")+12);
+			versionStr = versionStr.substring(0,versionStr.indexOf(","));
+			double newVersion = Double.parseDouble(versionStr.replaceAll("[^0-9\\.]+",""));
+			
+			if(newVersion > version)
+			{
+				System.out.println(" - Found new version of GUIMiner");
+				JLabel label = new JLabel();
+			    Font font = label.getFont();
 
+			    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+			    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+			    style.append("font-size:" + font.getSize() + "pt;");
+
+			    JEditorPane ep = new JEditorPane("text/html","<html><body style=\"" + style + "\">"
+			            + "There is a new version of the miner available <a href=\"https://github.com/yesiam77/GUIMiner/releases\">here</a>."
+			            + "</body></html>");
+
+			    ep.setEditable(false);
+			    ep.setBackground(label.getBackground());
+			    ep.addHyperlinkListener(new HyperlinkListener()
+			    {
+			        @Override
+			        public void hyperlinkUpdate(HyperlinkEvent e)
+			        {
+			        	if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+			            if(Desktop.isDesktopSupported())
+			            {
+			                Desktop desktop = Desktop.getDesktop();
+			                try
+			                {
+			                    desktop.browse(new URI("https://github.com/yesiam77/GUIMiner/releases"));
+			                    
+			                } catch (IOException | URISyntaxException e1) {
+			                    e1.printStackTrace();
+			                }
+			            }
+			        }
+			    });
+				
+				JOptionPane.showMessageDialog(gui,ep);
+			}
+			else
+				System.out.println(" - This is already the most recent version of GUIMiner");
+		}
 	}
 	
 	//TODO add all supported miners here
@@ -892,7 +912,7 @@ public class Wrapper {
 		
 		for(int k = 0; k < availableMiners.size(); k++)
 		{
-			System.out.println("Miner Found: "+availableMiners.getElementAt(k).toLowerCase());
+			System.out.println(" - Found: "+availableMiners.getElementAt(k).toLowerCase());
 			if(availableMiners.getElementAt(k).toLowerCase().contains("ccminer"))
 				Collections.addAll(fullAlgoList,ccMinerAlgos);
 			//if(availableMiners.getElementAt(k).toLowerCase().contains("claymore"))
