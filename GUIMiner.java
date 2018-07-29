@@ -7,6 +7,7 @@ import java.io.File;
  *
  * @author yesiam77
  */
+
 public class GUIMiner {
 	
 	public static GUI window = new GUI();
@@ -21,10 +22,14 @@ public class GUIMiner {
 					window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
                     window.setTitle("GUI Miner");
                     window.setVisible(true);
+                    window.setMinimumSize(new Dimension(1000,450));
                     window.addWindowListener(new java.awt.event.WindowAdapter() {
                         public void windowClosing(java.awt.event.WindowEvent e)
                         {
-                        	String algo = Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString();
+                        	String algo = "";
+                        	if(Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString() != null)
+                        		algo = Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString();
+                        		
                         	String poolURL = Wrapper.getGUI().getPoolURLField().getText();
                         	String username = Wrapper.getGUI().getUsernameField().getText();
                         	String password = Wrapper.getGUI().getPasswordField().getText();
@@ -60,9 +65,10 @@ public class GUIMiner {
                     
                     File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
                     Wrapper.prepare(window,jarFile);
-
                     
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                	e.printStackTrace();
+                }
 			}
 		});
 	}

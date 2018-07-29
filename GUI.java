@@ -1,37 +1,51 @@
 import java.awt.Image;
 
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 /**
  *
  * @author yesiam77
  */
+
 @SuppressWarnings("serial")
-public class GUI extends javax.swing.JFrame {
+public class GUI extends JFrame {
 
     /**
      * Creates new form GUI
      */
     public GUI() {
         super("GUI Miner");
-        ImageIcon image1 = new javax.swing.ImageIcon(getClass().getResource("Icon.png"));
+        ImageIcon image1 = new ImageIcon(getClass().getResource("Icon.png"));
         Image img = image1.getImage().getScaledInstance(image1.getIconWidth(),image1.getIconHeight(),Image.SCALE_SMOOTH);
         
         super.setIconImage(img);
         
         try
         {
-        	for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+        	for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
             	if ("Windows".equals(info.getName()))
             	{
-            		javax.swing.UIManager.setLookAndFeel(info.getClassName());
+            		UIManager.setLookAndFeel(info.getClassName());
                     break;
             	}
             
@@ -41,80 +55,66 @@ public class GUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
         initComponents();
     }
     
-    public JTabbedPane getTabPane()
-    {
+    public JTabbedPane getTabPane() {
     	return Tabs;
     }
     
-    public JList<String> getGPUsAvailableList()
-    {
+    public JList<String> getGPUsAvailableList() {
     	return GPUsAvailableList;
     }
     
-    public JComboBox<String> getAlgoCombobox()
-    {
+    public JComboBox<String> getAlgoCombobox() {
     	return AlgorithmCombobox;
     }
     
-    public JTextArea getConsoleTextArea()
-    {
+    public JTextArea getConsoleTextArea() {
     	return ConsoleTextArea;
     }
     
-    public JTextArea getMonitorTextArea()
-    {
+    public JTextArea getMonitorTextArea() {
     	return jTextArea1;
     }
     
-    public JButton getStartMinerButton()
-    {
+    public JButton getStartMinerButton() {
     	return StartMinerButton;
     }
     
-    public JTextField getPoolURLField()
-    {
+    public JTextField getPoolURLField() {
     	return PoolURLTextInput;
     }
     
-    public JTextField getUsernameField()
-    {
+    public JTextField getUsernameField() {
     	return UsernameTextInput;
     }
     
-    public JTextField getPasswordField()
-    {
+    public JTextField getPasswordField() {
     	return PasswordTextInput;
     }
     
-    public JTextField getAdvCMDField()
-    {
+    public JTextField getAdvCMDField() {
     	return AdvancedCommandlineTextInput;
     }
     
-    public JTextField getTotalHashrateField()
-    {
+    public JTextField getTotalHashrateField() {
     	return TotalHashrateField;
     }
     
-    public JTextField getTotalGPUsHashingField()
-    {
+    public JTextField getTotalGPUsHashingField() {
     	return TotalGPUsHashingField;
     }
     
-    public JTextField getAlgorithmField()
-    {
+    public JTextField getAlgorithmField() {
     	return AlgorithmField;
     }
     
-    public JTextField getAvgTempField()
-    {
+    public JTextField getAvgTempField() {
     	return AvgTempField;
     }
 
@@ -122,60 +122,62 @@ public class GUI extends javax.swing.JFrame {
     @SuppressWarnings("deprecation")
 	private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        Tabs = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        jSplitPane2 = new javax.swing.JSplitPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        GPUsIntensityList = new javax.swing.JList<>();
-        jLabel10 = new javax.swing.JLabel();
-        jSplitPane3 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        GPUsAvailableList = new javax.swing.JList<>();
-        jLabel9 = new javax.swing.JLabel();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        PoolURLTextInput = new javax.swing.JTextField();
-        UsernameTextInput = new javax.swing.JTextField();
-        PasswordTextInput = new javax.swing.JTextField();
-        StartMinerButton = new javax.swing.JButton();
-        AdvancedCommandlineTextInput = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        AlgorithmCombobox = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        MonitorPane = new javax.swing.JPanel();
-        jSplitPane4 = new javax.swing.JSplitPane();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        TotalHashrateField = new javax.swing.JTextField();
-        TotalGPUsHashingField = new javax.swing.JTextField();
-        AlgorithmField = new javax.swing.JTextField();
-        AvgTempField = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        ConsoleTextArea = new javax.swing.JTextArea();
-        jPanel6 = new javax.swing.JPanel();
-        HelpScrollPane = new javax.swing.JScrollPane();
-        HelpTextArea = new javax.swing.JTextArea();
+        jPanel1 = new JPanel();
+        Tabs = new JTabbedPane();
+        jPanel2 = new JPanel();
+        jSplitPane2 = new JSplitPane();
+        jScrollPane2 = new JScrollPane();
+        GPUsIntensityList = new JList<>();
+        jLabel10 = new JLabel();
+        jSplitPane3 = new JSplitPane();
+        jScrollPane1 = new JScrollPane();
+        GPUsAvailableList = new JList<>();
+        jLabel9 = new JLabel();
+        jSplitPane1 = new JSplitPane();
+        jLabel1 = new JLabel();
+        jPanel4 = new JPanel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        jLabel4 = new JLabel();
+        PoolURLTextInput = new JTextField();
+        UsernameTextInput = new JTextField();
+        PasswordTextInput = new JTextField();
+        StartMinerButton = new JButton();
+        AdvancedCommandlineTextInput = new JTextField();
+        jLabel5 = new JLabel();
+        jLabel6 = new JLabel();
+        jLabel11 = new JLabel();
+        AlgorithmCombobox = new JComboBox<>();
+        ConfigCombobox = new JComboBox<>();
+        jLabel7 = new JLabel();
+        jLabel8 = new JLabel();
+        MonitorPane = new JPanel();
+        jSplitPane4 = new JSplitPane();
+        jPanel3 = new JPanel();
+        jLabel12 = new JLabel();
+        jLabel13 = new JLabel();
+        jLabel14 = new JLabel();
+        jLabel15 = new JLabel();
+        TotalHashrateField = new JTextField();
+        TotalGPUsHashingField = new JTextField();
+        AlgorithmField = new JTextField();
+        AvgTempField = new JTextField();
+        jPanel7 = new JPanel();
+        jScrollPane3 = new JScrollPane();
+        jTextArea1 = new JTextArea();
+        jPanel5 = new JPanel();
+        jScrollPane4 = new JScrollPane();
+        ConsoleTextArea = new JTextArea();
+        jPanel6 = new JPanel();
+        HelpScrollPane = new JScrollPane();
+        HelpTextArea = new JTextArea();
+        jLabel21 = new JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane2.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
-        GPUsIntensityList.setModel(new javax.swing.AbstractListModel<String>() {
+        GPUsIntensityList.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -187,13 +189,13 @@ public class GUI extends javax.swing.JFrame {
         jSplitPane2.setRightComponent(jScrollPane2);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel10.setText("GPU Intensity");
         jSplitPane2.setTopComponent(jLabel10);
 
-        jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane3.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
-        GPUsAvailableList.setModel(new javax.swing.AbstractListModel<String>() {
+        GPUsAvailableList.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -205,11 +207,11 @@ public class GUI extends javax.swing.JFrame {
         jSplitPane3.setRightComponent(jScrollPane1);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel9.setText("Available GPUS");
         jSplitPane3.setTopComponent(jLabel9);
 
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Options");
@@ -246,7 +248,7 @@ public class GUI extends javax.swing.JFrame {
 
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel5.setText("Advanced Commandline Options");
 
         jLabel6.setForeground(java.awt.Color.gray);
@@ -254,70 +256,88 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel11.setText("Algorithm* (-a)");
 
-        AlgorithmCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
+        AlgorithmCombobox.setModel(new DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
         AlgorithmCombobox.setToolTipText("This is a required field.");
         AlgorithmCombobox.setNextFocusableComponent(PoolURLTextInput);
+        
+        ConfigCombobox.setModel(new DefaultComboBoxModel<>(Wrapper.getSavedConfigs()));
+        ConfigCombobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfigComboboxActionPerformed(evt);
+            }
+        });
+        
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel21.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel21.setText("Chosen Config");
 
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AdvancedCommandlineTextInput))
-                        .addGap(10, 10, 10)
-                        .addComponent(StartMinerButton))
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel11))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PoolURLTextInput)
-                            .addComponent(AlgorithmCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(PasswordTextInput, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(UsernameTextInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(ConfigCombobox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel21, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                                    .addComponent(AdvancedCommandlineTextInput))
+                                .addGap(10, 10, 10)
+                                .addComponent(StartMinerButton))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel11))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(PoolURLTextInput)
+                                    .addComponent(AlgorithmCombobox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(UsernameTextInput, GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PasswordTextInput, GroupLayout.Alignment.TRAILING)))))
+                    .addGroup(GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)))
                 .addGap(10, 10, 10))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(13, 13, 13)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(AlgorithmCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AlgorithmCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(PoolURLTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PoolURLTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(UsernameTextInput))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(PasswordTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PasswordTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(jLabel5)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel21))
                 .addGap(10, 10, 10)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(StartMinerButton)
-                    .addComponent(AdvancedCommandlineTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10))
+                    .addComponent(AdvancedCommandlineTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ConfigCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11))
         );
 
         PoolURLTextInput.getAccessibleContext().setAccessibleName("PoolURLTextInput");
@@ -328,6 +348,7 @@ public class GUI extends javax.swing.JFrame {
         AdvancedCommandlineTextInput.getAccessibleContext().setAccessibleName("AdvancedCommandlineTextInput");
         AdvancedCommandlineTextInput.getAccessibleContext().setAccessibleDescription("This is an optional field.");
         AlgorithmCombobox.getAccessibleContext().setAccessibleName("AlgorithmCombobox");
+        ConfigCombobox.getAccessibleContext().setAccessibleName("ConfigCombobox");
 
         jSplitPane1.setRightComponent(jPanel4);
 
@@ -336,49 +357,49 @@ public class GUI extends javax.swing.JFrame {
         jSplitPane1.setTopComponent(jLabel7);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel8.setText("Options");
         jSplitPane1.setTopComponent(jLabel8);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSplitPane3, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(jSplitPane1)
-                    .addComponent(jSplitPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jSplitPane3, GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
         Tabs.addTab("Settings", jPanel2);
 
-        jSplitPane4.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane4.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel12.setText("Total Hashrate");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel13.setText("# of GPUs Hashing");
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel14.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel14.setText("Algorithm");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel15.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel15.setText("Avg Temp (C)");
 
         TotalHashrateField.setEditable(false);
@@ -393,44 +414,44 @@ public class GUI extends javax.swing.JFrame {
         AvgTempField.setEditable(false);
         AvgTempField.setText("N/A");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(125, 125, 125)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TotalHashrateField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TotalGPUsHashingField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel12, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel13, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(TotalHashrateField, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TotalGPUsHashingField, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
                 .addGap(199, 199, 199)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AvgTempField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AlgorithmField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel15, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jLabel14, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(AvgTempField, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AlgorithmField, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
                 .addGap(125, 125, 125))
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jLabel14)
-                    .addComponent(TotalHashrateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AlgorithmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TotalHashrateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AlgorithmField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jLabel15)
-                    .addComponent(TotalGPUsHashingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AvgTempField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TotalGPUsHashingField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AvgTempField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
 
@@ -441,27 +462,27 @@ public class GUI extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        GroupLayout jPanel7Layout = new GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 969, Short.MAX_VALUE)
+            jPanel7Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 969, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+            jPanel7Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
         );
 
         jSplitPane4.setRightComponent(jPanel7);
 
-        javax.swing.GroupLayout MonitorPaneLayout = new javax.swing.GroupLayout(MonitorPane);
+        GroupLayout MonitorPaneLayout = new GroupLayout(MonitorPane);
         MonitorPane.setLayout(MonitorPaneLayout);
         MonitorPaneLayout.setHorizontalGroup(
-            MonitorPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            MonitorPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(jSplitPane4)
         );
         MonitorPaneLayout.setVerticalGroup(
-            MonitorPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            MonitorPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(jSplitPane4)
         );
 
@@ -472,15 +493,15 @@ public class GUI extends javax.swing.JFrame {
         ConsoleTextArea.setRows(5);
         jScrollPane4.setViewportView(ConsoleTextArea);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        GroupLayout jPanel5Layout = new GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
+            jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+            jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
         );
 
         Tabs.addTab("Console", jPanel5);
@@ -492,39 +513,39 @@ public class GUI extends javax.swing.JFrame {
         HelpTextArea.setCaretPosition(0);
         HelpScrollPane.setViewportView(HelpTextArea);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        GroupLayout jPanel6Layout = new GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(HelpScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
+            jPanel6Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(HelpScrollPane, GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(HelpScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+            jPanel6Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(HelpScrollPane, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
         );
 
         Tabs.addTab("Help", jPanel6);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(Tabs)
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(Tabs)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -539,69 +560,69 @@ public class GUI extends javax.swing.JFrame {
         Wrapper.setAdvCMDText(AdvancedCommandlineTextInput.getText());
     	
         if(Wrapper.isMinerRunning())
-    	{
         	Wrapper.stopMiner();
-    	}
         else if(Wrapper.checkReady())
-        {
         	Wrapper.startMiner();
-        }
     	else
-    	{
     		JOptionPane.showMessageDialog(this,"You must fill in all required fields before starting the miner!");
-    	}
+    }
+    
+    private void ConfigComboboxActionPerformed(java.awt.event.ActionEvent evt) {
+        Wrapper.configBoxChanged();
     }
 
 
     // Variables declaration - do not modify                     
-    private javax.swing.JTextField AdvancedCommandlineTextInput;
-    private javax.swing.JComboBox<String> AlgorithmCombobox;
-    private javax.swing.JTextField AlgorithmField;
-    private javax.swing.JTextField AvgTempField;
-    private javax.swing.JTextArea ConsoleTextArea;
-    private javax.swing.JList<String> GPUsAvailableList;
-    private javax.swing.JList<String> GPUsIntensityList;
-    private javax.swing.JScrollPane HelpScrollPane;
-    private javax.swing.JTextArea HelpTextArea;
-    private javax.swing.JPanel MonitorPane;
-    private javax.swing.JTextField PasswordTextInput;
-    private javax.swing.JTextField PoolURLTextInput;
-    private javax.swing.JButton StartMinerButton;
-    private javax.swing.JTabbedPane Tabs;
-    private javax.swing.JTextField TotalGPUsHashingField;
-    private javax.swing.JTextField TotalHashrateField;
-    private javax.swing.JTextField UsernameTextInput;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JSplitPane jSplitPane3;
-    private javax.swing.JSplitPane jSplitPane4;
-    private javax.swing.JTextArea jTextArea1;
+    private JTextField AdvancedCommandlineTextInput;
+    private JComboBox<String> AlgorithmCombobox;
+    private JTextField AlgorithmField;
+    private JTextField AvgTempField;
+    private JTextArea ConsoleTextArea;
+    private JList<String> GPUsAvailableList;
+    private JList<String> GPUsIntensityList;
+    private JScrollPane HelpScrollPane;
+    private JTextArea HelpTextArea;
+    private JPanel MonitorPane;
+    private JTextField PasswordTextInput;
+    private JTextField PoolURLTextInput;
+    private JButton StartMinerButton;
+    private JTabbedPane Tabs;
+    private JTextField TotalGPUsHashingField;
+    private JTextField TotalHashrateField;
+    private JTextField UsernameTextInput;
+    private JComboBox<String> ConfigCombobox;
+    private JLabel jLabel1;
+    private JLabel jLabel10;
+    private JLabel jLabel11;
+    private JLabel jLabel12;
+    private JLabel jLabel13;
+    private JLabel jLabel14;
+    private JLabel jLabel15;
+    private JLabel jLabel21;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
+    private JLabel jLabel6;
+    private JLabel jLabel7;
+    private JLabel jLabel8;
+    private JLabel jLabel9;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JPanel jPanel3;
+    private JPanel jPanel4;
+    private JPanel jPanel5;
+    private JPanel jPanel6;
+    private JPanel jPanel7;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane3;
+    private JScrollPane jScrollPane4;
+    private JSplitPane jSplitPane1;
+    private JSplitPane jSplitPane2;
+    private JSplitPane jSplitPane3;
+    private JSplitPane jSplitPane4;
+    private JTextArea jTextArea1;
     // End of variables declaration           
     
 }

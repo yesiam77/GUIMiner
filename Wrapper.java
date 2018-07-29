@@ -37,10 +37,11 @@ import javax.swing.event.HyperlinkListener;
 *
 * @author yesiam77
 */
+
 public class Wrapper {
 	
 	private static double version = 1.3;
-	private static boolean compileWithMiners = false;
+	private static boolean compileWithMiners = true;
 	private static String OS = "";
 	private static String homeDir = "";
 	private static String selectedMiner = "";
@@ -118,7 +119,6 @@ public class Wrapper {
 				
 		try
 		{	
-			//TODO find linux and mac equivalents of the window cmd for finding system GPUs
 			if(OS.equals("Windows"))
 			{
 				Process pr = rt.exec("wmic path win32_VideoController get name");
@@ -133,6 +133,7 @@ public class Wrapper {
 			}
 			else
 			{
+				//TODO find linux and mac equivalents of the window cmd for finding system GPUs
 				getGUI().getGPUsAvailableList().setModel(availableGPUs);
 				JOptionPane.showMessageDialog(getGUI(),"The auto-populate feature for the GPU list does not work on Linux.\n"
 						+ " Try using the Advanced Commandline Options box to specify the devices to use via the -d argument.\n"
@@ -176,7 +177,8 @@ public class Wrapper {
 		try
 		{
 			checkAvailableMiners();
-			System.out.println("Waiting for user input");
+			boolean alreadyExtracted = false;
+			System.out.println("Waiting for miner selection");
 			
 			if(availableMiners.size() > 1)
 			{
@@ -185,6 +187,15 @@ public class Wrapper {
 						for(int k = 0; k < availableMiners.size(); k++)
 							if(availableMiners.getElementAt(k).toLowerCase().contains(knownMiners.get(j).getShortName()))
 								availableMiners.removeElementAt(k);
+				
+				if(!compileWithMiners)
+					for(int j = 0; j < availableMiners.size(); j++)
+						for(int k = 0; k < availableMiners.size(); k++)
+							if(availableMiners.get(j).equals(availableMiners.get(k)) && !alreadyExtracted)
+							{
+								availableMiners.removeElementAt(j);
+								alreadyExtracted = true;
+							}
 				
 				JList<String> list = new JList<String>();
 				list.setModel(availableMiners);
@@ -205,7 +216,7 @@ public class Wrapper {
 					JOptionPane.showMessageDialog(getGUI(),"No compatible miner was found for algo \""+algo+"\"");
 			
 			if(compileWithMiners)
-				if(selectedMiner.contains("(Prepackaged)"))
+				if(selectedMiner.contains("(Prepackaged)") && !alreadyExtracted)
 					extractFile(selectedMiner);
 			
 			//TODO adjust these after adding new miners
@@ -711,21 +722,24 @@ public class Wrapper {
 		selectedMiner = "";
 		availableMiners.clear();
 		
-		List<String> results = new ArrayList<String>();
-		File[] files = new File(jarFile.getParentFile().getCanonicalPath()).listFiles();
-
-		for (File file : files) {
-		    if (file.isFile()) {
-		        results.add(file.getName());
-		    }
-		}
-		
-		for(int k = 0; k < results.size(); k++)
+		if(!compileWithMiners)
 		{
-			for(int j = 0; j < knownMiners.size(); j++)
-			if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).getShortName().replaceAll("-","")))
+			List<String> results = new ArrayList<String>();
+			File[] files = new File(jarFile.getParentFile().getCanonicalPath()).listFiles();
+	
+			for (File file : files) {
+			    if (file.isFile()) {
+			        results.add(file.getName());
+			    }
+			}
+			
+			for(int k = 0; k < results.size(); k++)
 			{
-				availableMiners.addElement(results.get(k));
+				for(int j = 0; j < knownMiners.size(); j++)
+				if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).getShortName().replaceAll("-","")))
+				{
+					availableMiners.addElement(results.get(k));
+				}
 			}
 		}
 				
@@ -878,10 +892,20 @@ public class Wrapper {
 		}
 	}
 	
+	public static ArrayList<String> deDupe(ArrayList<String> array)
+	{
+		Set<String> temp = new LinkedHashSet<>();
+		
+		temp.addAll(array);
+		array.clear();
+		array.addAll(temp);
+		Collections.sort(array);
+		return array;
+	}
+	
 	public static String[] getFullAlgoList()
 	{
 		ArrayList<String> fullAlgoList = new ArrayList<String>();
-		Set<String> temp = new LinkedHashSet<>();
 		
 		for(int k = 0; k < availableMiners.size(); k++)
 		{
@@ -890,13 +914,28 @@ public class Wrapper {
 				if(availableMiners.getElementAt(k).toLowerCase().contains(knownMiners.get(j).getShortName()))
 					Collections.addAll(fullAlgoList,knownMiners.get(j).getAlgos());
 		}
-
-		temp.addAll(fullAlgoList);
-		fullAlgoList.clear();
-		fullAlgoList.addAll(temp);
-		Collections.sort(fullAlgoList);
 		
-		return fullAlgoList.toArray(new String[0]);
+		return deDupe(fullAlgoList).toArray(new String[0]);
+	}
+	
+	//TODO add this
+	public static void configBoxChanged()
+	{
+		
+	}
+	
+	//TODO add this
+	public static String[] getSavedConfigs()
+	{
+		ArrayList<String> configs = new ArrayList<String>();
+		
+		configs.add("testConfig1");
+		configs.add("testConfig2");
+		configs.add("testConfig3");
+		configs.add("testConfig4");
+		configs.add("testConfig5");
+		
+		return configs.toArray(new String[0]);
 	}
 
 	public static void writeConsole(String newLine)
