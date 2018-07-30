@@ -1,4 +1,7 @@
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -30,9 +33,6 @@ import javax.swing.WindowConstants;
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 
-    /**
-     * Creates new form GUI
-     */
     public GUI() {
         super("GUI Miner");
         ImageIcon image1 = new ImageIcon(getClass().getResource("Icon.png"));
@@ -118,7 +118,6 @@ public class GUI extends JFrame {
     	return AvgTempField;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     @SuppressWarnings("deprecation")
 	private void initComponents() {
 
@@ -143,12 +142,12 @@ public class GUI extends JFrame {
         UsernameTextInput = new JTextField();
         PasswordTextInput = new JTextField();
         StartMinerButton = new JButton();
+        SelectConfigButton = new javax.swing.JButton();
         AdvancedCommandlineTextInput = new JTextField();
         jLabel5 = new JLabel();
         jLabel6 = new JLabel();
         jLabel11 = new JLabel();
         AlgorithmCombobox = new JComboBox<>();
-        ConfigCombobox = new JComboBox<>();
         jLabel7 = new JLabel();
         jLabel8 = new JLabel();
         MonitorPane = new JPanel();
@@ -171,7 +170,6 @@ public class GUI extends JFrame {
         jPanel6 = new JPanel();
         HelpScrollPane = new JScrollPane();
         HelpTextArea = new JTextArea();
-        jLabel21 = new JLabel();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -260,84 +258,77 @@ public class GUI extends JFrame {
         AlgorithmCombobox.setToolTipText("This is a required field.");
         AlgorithmCombobox.setNextFocusableComponent(PoolURLTextInput);
         
-        ConfigCombobox.setModel(new DefaultComboBoxModel<>(Wrapper.getSavedConfigs()));
-        ConfigCombobox.addActionListener(new java.awt.event.ActionListener() {
+        SelectConfigButton.setText("Select Config");
+        SelectConfigButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfigComboboxActionPerformed(evt);
+                SelectConfigButtonActionPerformed(evt);
             }
         });
-        
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel21.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel21.setText("Chosen Config");
 
-        GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ConfigCombobox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel21, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                                .addComponent(SelectConfigButton)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                                     .addComponent(AdvancedCommandlineTextInput))
                                 .addGap(10, 10, 10)
                                 .addComponent(StartMinerButton))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel11))
                                 .addGap(30, 30, 30)
-                                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(PoolURLTextInput)
-                                    .addComponent(AlgorithmCombobox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(UsernameTextInput, GroupLayout.Alignment.TRAILING)
-                                    .addComponent(PasswordTextInput, GroupLayout.Alignment.TRAILING)))))
-                    .addGroup(GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(AlgorithmCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(UsernameTextInput, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PasswordTextInput, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)))
                 .addGap(10, 10, 10))
         );
         jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(13, 13, 13)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(AlgorithmCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AlgorithmCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(PoolURLTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PoolURLTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(UsernameTextInput))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(PasswordTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PasswordTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel21))
+                .addComponent(jLabel5)
                 .addGap(10, 10, 10)
-                .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartMinerButton)
-                    .addComponent(AdvancedCommandlineTextInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ConfigCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(StartMinerButton)
+                        .addComponent(AdvancedCommandlineTextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SelectConfigButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         PoolURLTextInput.getAccessibleContext().setAccessibleName("PoolURLTextInput");
@@ -348,7 +339,6 @@ public class GUI extends JFrame {
         AdvancedCommandlineTextInput.getAccessibleContext().setAccessibleName("AdvancedCommandlineTextInput");
         AdvancedCommandlineTextInput.getAccessibleContext().setAccessibleDescription("This is an optional field.");
         AlgorithmCombobox.getAccessibleContext().setAccessibleName("AlgorithmCombobox");
-        ConfigCombobox.getAccessibleContext().setAccessibleName("ConfigCombobox");
 
         jSplitPane1.setRightComponent(jPanel4);
 
@@ -549,11 +539,14 @@ public class GUI extends JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }                     
 
     private void StartMinerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	
+    	if(AlgorithmCombobox.getSelectedItem() != null)
+        	Wrapper.setAlgo(AlgorithmCombobox.getSelectedItem().toString());
+    		
     	Wrapper.setDevices(GPUsAvailableList.getSelectedIndices());
-    	Wrapper.setAlgo(AlgorithmCombobox.getSelectedItem().toString());
     	Wrapper.setPoolURL(PoolURLTextInput.getText());
     	Wrapper.setUsername(UsernameTextInput.getText());
     	Wrapper.setPassword(PasswordTextInput.getText());
@@ -567,12 +560,25 @@ public class GUI extends JFrame {
     		JOptionPane.showMessageDialog(this,"You must fill in all required fields before starting the miner!");
     }
     
-    private void ConfigComboboxActionPerformed(java.awt.event.ActionEvent evt) {
-        Wrapper.configBoxChanged();
+    private void SelectConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if(Wrapper.getConfigSelector() == null)
+    	{
+    		ConfigSelector cs = new ConfigSelector();
+    		Wrapper.setConfigSelector(cs);
+    		Point loc = Wrapper.getGUI().getLocationOnScreen();
+    		Dimension dim = Wrapper.getGUI().getSize();
+			cs.setLocation((int)(loc.getX()+dim.getWidth()/2-cs.getSize().width/2),(int)(loc.getY()+dim.getHeight()/2-cs.getSize().height/2));
+			cs.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    		cs.setVisible(true);
+    	}
+    	else
+    	{
+    		Wrapper.getConfigSelector().setState(NORMAL);
+    		Wrapper.getConfigSelector().requestFocus();
+    	}
     }
 
 
-    // Variables declaration - do not modify                     
     private JTextField AdvancedCommandlineTextInput;
     private JComboBox<String> AlgorithmCombobox;
     private JTextField AlgorithmField;
@@ -586,11 +592,11 @@ public class GUI extends JFrame {
     private JTextField PasswordTextInput;
     private JTextField PoolURLTextInput;
     private JButton StartMinerButton;
+    private JButton SelectConfigButton;
     private JTabbedPane Tabs;
     private JTextField TotalGPUsHashingField;
     private JTextField TotalHashrateField;
     private JTextField UsernameTextInput;
-    private JComboBox<String> ConfigCombobox;
     private JLabel jLabel1;
     private JLabel jLabel10;
     private JLabel jLabel11;
@@ -598,7 +604,6 @@ public class GUI extends JFrame {
     private JLabel jLabel13;
     private JLabel jLabel14;
     private JLabel jLabel15;
-    private JLabel jLabel21;
     private JLabel jLabel2;
     private JLabel jLabel3;
     private JLabel jLabel4;
@@ -623,6 +628,182 @@ public class GUI extends JFrame {
     private JSplitPane jSplitPane3;
     private JSplitPane jSplitPane4;
     private JTextArea jTextArea1;
-    // End of variables declaration           
+}
+
+@SuppressWarnings("serial")
+class ConfigSelector extends JFrame {
+
+    public ConfigSelector() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        AvailableConfigsCombobox = new javax.swing.JComboBox<>();
+        SaveCurrentConfigButton = new javax.swing.JButton();
+        RenameSelectedConfigButton = new javax.swing.JButton();
+        DeleteSelectedConfigButton = new javax.swing.JButton();
+        SwitchConfigsButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e)
+            {
+                Wrapper.setConfigSelector(null);
+            }
+        });
+
+        AvailableConfigsCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getConfigNames(Wrapper.getAvailableConfigs()).toArray(new String[0])));
+
+        SaveCurrentConfigButton.setText("Save Current");
+        SaveCurrentConfigButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	SaveCurrentConfigButtonActionPerformed(evt);
+            }
+        });
+        
+        RenameSelectedConfigButton.setText("Rename");
+        RenameSelectedConfigButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	RenameSelectedConfigButtonActionPerformed(evt);
+            }
+        });
+        
+        DeleteSelectedConfigButton.setText("Delete");
+        DeleteSelectedConfigButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	DeleteSelectedConfigButtonActionPerformed(evt);
+            }
+        });
+        
+        SwitchConfigsButton.setText("Switch Config");
+        SwitchConfigsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SwitchConfigsButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Load saved pool info");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(AvailableConfigsCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(RenameSelectedConfigButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DeleteSelectedConfigButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(SwitchConfigsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(SaveCurrentConfigButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SaveCurrentConfigButton))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(AvailableConfigsCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(RenameSelectedConfigButton)))
+                .addGap(10, 10, 10)
+                .addComponent(DeleteSelectedConfigButton)
+                .addGap(25, 25, 25)
+                .addComponent(SwitchConfigsButton)
+                .addGap(10, 10, 10))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }
+
+    private void SaveCurrentConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+    	String newName = "##"+JOptionPane.showInputDialog(this,"What would you like to name the current config?");
+    	if(newName != null && !newName.equals("null") && !newName.isEmpty())
+    		newName = "Config "+(Wrapper.getAvailableConfigs().size()+1);
+    	
+    		String algo = "";
+    		String url = Wrapper.getGUI().getPoolURLField().getText();
+    		String user = Wrapper.getGUI().getUsernameField().getText();
+    		String pass = Wrapper.getGUI().getPasswordField().getText();
+    		String adv = Wrapper.getGUI().getAdvCMDField().getText();
+    		
+    		if(Wrapper.getGUI().getAlgoCombobox().getSelectedItem() == null)
+    			algo = "#";
+    		else
+    			algo = Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString();
+    		
+    		if(algo.isEmpty())
+    			algo = "#";
+    		    		
+    		if(url.isEmpty())
+    			url = "#";
+    			
+    		if(user.isEmpty())
+    			user = "#";
+    				
+    		if(pass.isEmpty())
+    			pass = "#";
+    			
+    		if(adv.isEmpty())
+    			adv = "#";
+    			
+    	Wrapper.getAvailableConfigs().add(0,new Config(newName,algo,url,user,pass,adv));
+    	AvailableConfigsCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getConfigNames(Wrapper.getAvailableConfigs()).toArray(new String[0])));
+    }                                                   
     
+    private void RenameSelectedConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {    
+    	String newName = "##"+JOptionPane.showInputDialog(this,"What would you like to rename \""+Wrapper.getAvailableConfigs().get(AvailableConfigsCombobox.getSelectedIndex()).getConfigName().replaceAll("##","")+"\" to?");
+    	if(newName != null && !newName.equals("null") && !newName.isEmpty())
+    		Wrapper.getAvailableConfigs().get(AvailableConfigsCombobox.getSelectedIndex()).setConfigName(newName);
+    	AvailableConfigsCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getConfigNames(Wrapper.getAvailableConfigs()).toArray(new String[0])));
+    }
+    
+    private void DeleteSelectedConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        if(JOptionPane.showConfirmDialog(this,"Are you sure you wish to delete \""+Wrapper.getConfigNames(Wrapper.getAvailableConfigs()).get(AvailableConfigsCombobox.getSelectedIndex())+"\"") == 0)
+        	Wrapper.getAvailableConfigs().remove(AvailableConfigsCombobox.getSelectedIndex());
+        AvailableConfigsCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getConfigNames(Wrapper.getAvailableConfigs()).toArray(new String[0])));
+    }
+    
+    private void SwitchConfigsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if(Wrapper.getAvailableConfigs().size() >= 1)
+    	{
+	    	Wrapper.getAvailableConfigs().add(0,Wrapper.getAvailableConfigs().remove(AvailableConfigsCombobox.getSelectedIndex()));
+	        Wrapper.loadConfig(0);
+    	}
+        Wrapper.getConfigSelector().dispatchEvent(new WindowEvent(Wrapper.getConfigSelector(),WindowEvent.WINDOW_CLOSING));
+        Wrapper.setConfigSelector(null);
+    }                                                  
+
+    private javax.swing.JComboBox<String> AvailableConfigsCombobox;
+    private javax.swing.JButton DeleteSelectedConfigButton;
+    private javax.swing.JButton RenameSelectedConfigButton;
+    private javax.swing.JButton SaveCurrentConfigButton;
+    private javax.swing.JButton SwitchConfigsButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;                
 }

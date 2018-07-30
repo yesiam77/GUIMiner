@@ -41,11 +41,12 @@ import javax.swing.event.HyperlinkListener;
 public class Wrapper {
 	
 	private static double version = 1.3;
-	private static boolean compileWithMiners = true;
+	private static boolean compileWithMiners = false;
 	private static String OS = "";
 	private static String homeDir = "";
 	private static String selectedMiner = "";
 	private static ArrayList<Miner> knownMiners = new ArrayList<Miner>();
+	private static ArrayList<Config> availableConfigs = new ArrayList<Config>();
 	private static DefaultListModel<String> availableMiners = new DefaultListModel<String>();
 
 	private static DefaultListModel<String> availableGPUs = new DefaultListModel<String>();
@@ -53,6 +54,7 @@ public class Wrapper {
 	private static Runtime rt = Runtime.getRuntime();
 	private static Process minerProcess = null;
 	private static File jarFile = null;
+	private static ConfigSelector cs = null;
 	private static GUI gui = null;
 
 	private static String advCMDText = "";
@@ -116,9 +118,9 @@ public class Wrapper {
 			System.out.println("This version of GUIMiner was compiled with miners");
 		else
 			System.out.println("This version of GUIMiner was compiled without miners");
-				
+
 		try
-		{	
+		{
 			if(OS.equals("Windows"))
 			{
 				Process pr = rt.exec("wmic path win32_VideoController get name");
@@ -140,36 +142,16 @@ public class Wrapper {
 						+ " More information about this argument can be found in the help tab.");
 			}
 			
-			checkAvailableMiners();
-				
-			ArrayList<String> save = Wrapper.readFile("save.dat");
-			if(save.size() >= 5)
-			{
-				getGUI().getAlgoCombobox().setSelectedItem(save.get(0).replaceAll("#",""));
-				getGUI().getPoolURLField().setText(save.get(1).replaceAll("#",""));
-				getGUI().getUsernameField().setText(save.get(2).replaceAll("#",""));
-				getGUI().getPasswordField().setText(save.get(3).replaceAll("#",""));
-				getGUI().getAdvCMDField().setText(save.get(4).replaceAll("#",""));
-					
-				algo = save.get(0).replaceAll("#","");
-				poolURL = save.get(1).replaceAll("#","");
-				username = save.get(2).replaceAll("#","");
-				password = save.get(3).replaceAll("#","");
-				advCMDText = save.get(4).replaceAll("#","");
-				System.out.println("Loaded saved data");
-			}
-			
-			ArrayList<String> settings = Wrapper.readFile("settings.dat");
-			if(settings.size() >= 5)
-			{
-				//TODO
-				//algo = save.get(0).replaceAll("#","");
-			}
-			
-			checkForUpdate();
-			System.out.println("Waiting for user input");
-			
-		} catch (IOException e) {}
+		} catch (IOException e){
+			System.out.println("Unable to pull GPU info");
+		}
+		
+		checkAvailableMiners();
+		loadSavedConfigs();
+		loadConfig(0);
+		checkForUpdate();
+		System.out.println("Waiting for user input");
+
 	}
 	
 	public static void startMiner()
@@ -654,7 +636,9 @@ public class Wrapper {
 								writeConsole(input);
 						}
 						
-					} catch (IOException e) {}
+					} catch (IOException e) {
+						System.out.println("There was an issue while killing the monitoring thread");
+					}
 					System.out.println("Killed monitoring thread");
 				}
 				
@@ -688,7 +672,9 @@ public class Wrapper {
 				
 			}.start();
 			
-		} catch (IOException e) {}		
+		} catch (IOException e) {
+			System.out.println("There was an issue with the monitoring thread");
+		}		
 	}
 		
 	public static boolean checkReady()
@@ -715,109 +701,113 @@ public class Wrapper {
 	}
 	
 	//TODO adjust after adding new miners
-	public static void checkAvailableMiners() throws IOException
+	public static void checkAvailableMiners()
 	{
-		System.out.println("Refreshing list of available miners");
-		
-		selectedMiner = "";
-		availableMiners.clear();
-		
-		if(!compileWithMiners)
+		try
 		{
-			List<String> results = new ArrayList<String>();
-			File[] files = new File(jarFile.getParentFile().getCanonicalPath()).listFiles();
+			System.out.println("Refreshing list of available miners");
+			selectedMiner = "";
+			availableMiners.clear();
+			
+			if(!compileWithMiners)
+			{
+				List<String> results = new ArrayList<String>();
+				File[] files = new File(jarFile.getParentFile().getCanonicalPath()).listFiles();
+		
+				for (File file : files) {
+				    if (file.isFile()) {
+				        results.add(file.getName());
+				    }
+				}
+				
+				for(int k = 0; k < results.size(); k++)
+				{
+					for(int j = 0; j < knownMiners.size(); j++)
+					if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).getShortName().replaceAll("-","")))
+					{
+						availableMiners.addElement(results.get(k));
+					}
+				}
+			}
+					
+			if(OS.equals("Windows"))
+			{
+				boolean nVidia = false;
+				boolean AMD = false;
+				for(int k = 0; k < availableGPUs.size(); k++)
+				{
+					if(availableGPUs.getElementAt(k).toLowerCase().contains("nvidia") || availableGPUs.getElementAt(k).toLowerCase().contains("geforce"))
+						nVidia = true;
+					else if(availableGPUs.getElementAt(k).toLowerCase().contains("amd") || availableGPUs.getElementAt(k).toLowerCase().contains("radeon"))
+						AMD = true;
+				}
+				
+				//These come prepackaged in .jar
+				if(compileWithMiners)
+				{
+					if(nVidia)
+					{
+						availableMiners.addElement("ccminer-x64(Prepackaged).exe");
+						availableMiners.addElement("CryptoDredge(Prepackaged).exe");
+						availableMiners.addElement("z-enemy(Prepackaged).exe");
+					}
+					
+					if(AMD)
+					{
+						
+					}
+				}
+				
+				for(int k = 0; k < availableMiners.size(); k++)
+					if(!availableMiners.getElementAt(k).contains(".exe"))
+					{
+						availableMiners.removeElementAt(k);
+						k--;
+					}
+			}
+			else if(OS.equals("Linux"))
+			{
+				boolean nVidia = false;
+				boolean AMD = false;
+				for(int k = 0; k < availableGPUs.size(); k++)
+				{
+					if(availableGPUs.getElementAt(k).toLowerCase().contains("nvidia") || availableGPUs.getElementAt(k).toLowerCase().contains("geforce"))
+						nVidia = true;
+					else if(availableGPUs.getElementAt(k).toLowerCase().contains("amd") || availableGPUs.getElementAt(k).toLowerCase().contains("radeon"))
+						AMD = true;
+				}
 	
-			for (File file : files) {
-			    if (file.isFile()) {
-			        results.add(file.getName());
-			    }
-			}
-			
-			for(int k = 0; k < results.size(); k++)
-			{
-				for(int j = 0; j < knownMiners.size(); j++)
-				if(results.get(k).toLowerCase().replaceAll("-","").contains(knownMiners.get(j).getShortName().replaceAll("-","")))
+				//These come prepackaged in .jar
+				if(compileWithMiners)
 				{
-					availableMiners.addElement(results.get(k));
-				}
-			}
-		}
-				
-		if(OS.equals("Windows"))
-		{
-			boolean nVidia = false;
-			boolean AMD = false;
-			for(int k = 0; k < availableGPUs.size(); k++)
-			{
-				if(availableGPUs.getElementAt(k).toLowerCase().contains("nvidia") || availableGPUs.getElementAt(k).toLowerCase().contains("geforce"))
-					nVidia = true;
-				else if(availableGPUs.getElementAt(k).toLowerCase().contains("amd") || availableGPUs.getElementAt(k).toLowerCase().contains("radeon"))
-					AMD = true;
-			}
-			
-			//These come prepackaged in .jar
-			if(compileWithMiners)
-			{
-				if(nVidia)
-				{
-					availableMiners.addElement("ccminer-x64(Prepackaged).exe");
-					availableMiners.addElement("CryptoDredge(Prepackaged).exe");
-					availableMiners.addElement("z-enemy(Prepackaged).exe");
-				}
-				
-				if(AMD)
-				{
+					if(nVidia)
+					{
+						availableMiners.addElement("z-enemy-ubuntu-cuda9_1(Prepackaged)");
+					}
 					
+					if(AMD)
+					{
+						
+					}
 				}
 			}
 			
-			for(int k = 0; k < availableMiners.size(); k++)
-				if(!availableMiners.getElementAt(k).contains(".exe"))
-				{
-					availableMiners.removeElementAt(k);
-					k--;
-				}
-		}
-		else if(OS.equals("Linux"))
-		{
-			boolean nVidia = false;
-			boolean AMD = false;
-			for(int k = 0; k < availableGPUs.size(); k++)
+			if(availableMiners.size() == 0)
 			{
-				if(availableGPUs.getElementAt(k).toLowerCase().contains("nvidia") || availableGPUs.getElementAt(k).toLowerCase().contains("geforce"))
-					nVidia = true;
-				else if(availableGPUs.getElementAt(k).toLowerCase().contains("amd") || availableGPUs.getElementAt(k).toLowerCase().contains("radeon"))
-					AMD = true;
+				System.out.println(" - No compatible miners found");
+				JOptionPane.showMessageDialog(getGUI(),"Unable to find a compatible miner either prepackaged or in the same directory as this GUI.\n"
+						+ "Compatible miners include: CCMiner, CryptoDredge and Z-Enemy");
+				System.out.println("Goodbye");
+				System.exit(0);
 			}
-
-			//These come prepackaged in .jar
-			if(compileWithMiners)
+			else
 			{
-				if(nVidia)
-				{
-					availableMiners.addElement("z-enemy-ubuntu-cuda9_1(Prepackaged)");
-				}
-				
-				if(AMD)
-				{
-					
-				}
+				int save = getGUI().getAlgoCombobox().getSelectedIndex();
+				getGUI().getAlgoCombobox().setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
+				getGUI().getAlgoCombobox().setSelectedIndex(save);
 			}
-		}
-		
-		if(availableMiners.size() == 0)
-		{
-			System.out.println(" - No compatible miners found");
-			JOptionPane.showMessageDialog(getGUI(),"Unable to find a compatible miner either prepackaged or in the same directory as this GUI.\n"
-					+ "Compatible miners include: CCMiner, CryptoDredge and Z-Enemy");
-			System.out.println("Goodbye");
-			System.exit(0);
-		}
-		else
-		{
-			int save = getGUI().getAlgoCombobox().getSelectedIndex();
-			getGUI().getAlgoCombobox().setModel(new javax.swing.DefaultComboBoxModel<>(Wrapper.getFullAlgoList()));
-			getGUI().getAlgoCombobox().setSelectedIndex(save);
+		} catch(IOException e) {
+			System.out.println("There was an issue getting the active directory");
 		}
 	}
 	
@@ -879,7 +869,7 @@ public class Wrapper {
 			                    desktop.browse(new URI("https://github.com/yesiam77/GUIMiner/releases"));
 			                    
 			                } catch (IOException | URISyntaxException e1) {
-			                    e1.printStackTrace();
+			                    System.out.println("There was an issue while clicking the update link");
 			                }
 			            }
 			        }
@@ -918,24 +908,64 @@ public class Wrapper {
 		return deDupe(fullAlgoList).toArray(new String[0]);
 	}
 	
-	//TODO add this
-	public static void configBoxChanged()
+	public static void loadSavedConfigs()
 	{
+		availableConfigs.clear();
+		ArrayList<String> strArray = Wrapper.readFile("save.dat");
 		
+		String configName = "New Config";
+		String algo = "";
+		String url = "";
+		String user = "";
+		String pass = "";
+		String adv = "";
+		
+		for(int k = 0; k < strArray.size(); k++)
+			if(strArray.get(k).contains("##"))
+				configName = strArray.get(k);
+			else if(k % 6 == 1)
+				algo = strArray.get(k);
+			else if(k % 6 == 2)
+				url = strArray.get(k);
+			else if(k % 6 == 3)
+				user = strArray.get(k);
+			else if(k % 6 == 4)
+				pass = strArray.get(k);
+			else if(k % 6 == 5)
+			{
+				adv = strArray.get(k);
+				availableConfigs.add(new Config(configName,algo,url,user,pass,adv));
+			}
+		
+		System.out.println("Loaded config data");
 	}
 	
-	//TODO add this
-	public static String[] getSavedConfigs()
+	public static void loadConfig(int index)
 	{
-		ArrayList<String> configs = new ArrayList<String>();
+		if(availableConfigs.size()-1 >= index)
+		{
+			getGUI().getAlgoCombobox().setSelectedItem(availableConfigs.get(index).getAlgo().replaceAll("#",""));
+			getGUI().getPoolURLField().setText(availableConfigs.get(index).getUrl().replaceAll("#",""));
+			getGUI().getUsernameField().setText(availableConfigs.get(index).getUser().replaceAll("#",""));
+			getGUI().getPasswordField().setText(availableConfigs.get(index).getPass().replaceAll("#",""));
+			getGUI().getAdvCMDField().setText(availableConfigs.get(index).getAdv().replaceAll("#",""));
+			
+			algo = availableConfigs.get(index).getAlgo().replaceAll("#","");
+			poolURL = availableConfigs.get(index).getUrl().replaceAll("#","");
+			username = availableConfigs.get(index).getUser().replaceAll("#","");
+			password = availableConfigs.get(index).getPass().replaceAll("#","");
+			advCMDText = availableConfigs.get(index).getAdv().replaceAll("#","");
+		}
+	}
+	
+	public static ArrayList<String> getConfigNames(ArrayList<Config> configs)
+	{
+		ArrayList<String> strArray = new ArrayList<String>();
 		
-		configs.add("testConfig1");
-		configs.add("testConfig2");
-		configs.add("testConfig3");
-		configs.add("testConfig4");
-		configs.add("testConfig5");
+		for(int k = 0; k < configs.size(); k++)
+			strArray.add(configs.get(k).getConfigName().replaceAll("#",""));
 		
-		return configs.toArray(new String[0]);
+		return strArray;
 	}
 
 	public static void writeConsole(String newLine)
@@ -982,7 +1012,9 @@ public class Wrapper {
 			Files.copy(Wrapper.class.getResourceAsStream(resourceName),Paths.get(tempFile.getCanonicalPath()), StandardCopyOption.REPLACE_EXISTING);
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("There was a problem while extracting the miner from the jar");
+			System.out.println("Goodbye");
+			System.exit(0);
 		}
     }
 	
@@ -1015,7 +1047,11 @@ public class Wrapper {
 				}
 			}
 					
-		} catch (IOException e){}	
+		} catch (IOException e) {
+			System.out.println("Unable to read save data file");
+			System.out.println("Goodbye");
+			System.exit(0);
+		}	
 		
 		return fileContent;
 	}
@@ -1035,7 +1071,9 @@ public class Wrapper {
 				new FileOutputStream(saveFile,false).close();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Unable to write save data file");
+			System.out.println("Goodbye");
+			System.exit(0);
 		}
 	}
 	
@@ -1052,7 +1090,9 @@ public class Wrapper {
 			return;
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Unable to write save data file");
+			System.out.println("Goodbye");
+			System.exit(0);
 		}
 	}
 	
@@ -1073,6 +1113,21 @@ public class Wrapper {
 			temp += newDevices[k]+",";
 		
 		devices = temp.substring(0,temp.length()-1);
+	}
+	
+	public static ArrayList<Config> getAvailableConfigs()
+	{
+		return availableConfigs;
+	}
+	
+	public static void setConfigSelector(ConfigSelector newCS)
+	{
+		cs = newCS;
+	}
+	
+	public static ConfigSelector getConfigSelector()
+	{
+		return cs;
 	}
 	
 	public static GUI getGUI()
@@ -1127,5 +1182,72 @@ class Miner
 	
 	public String[] getAlgos() {
 		return algos;
+	}
+}
+
+class Config
+{
+	private String configName = "";
+	private String algo = "#";
+	private String url = "#";
+	private String user = "#";
+	private String pass = "#";
+	private String adv = "#";
+	
+	Config(String configName, String algo, String url, String user, String pass, String adv) {
+		this.configName = configName;
+		this.algo = algo;
+		this.url = url;
+		this.user = user;
+		this.pass = pass;
+		this.adv = adv;
+	}
+
+	public String getConfigName() {
+		return configName;
+	}
+
+	public void setConfigName(String configName) {
+		this.configName = configName;
+	}
+
+	public String getAlgo() {
+		return algo;
+	}
+
+	public void setAlgo(String algo) {
+		this.algo = algo;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public String getAdv() {
+		return adv;
+	}
+
+	public void setAdv(String adv) {
+		this.adv = adv;
 	}
 }

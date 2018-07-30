@@ -26,36 +26,18 @@ public class GUIMiner {
                     window.addWindowListener(new java.awt.event.WindowAdapter() {
                         public void windowClosing(java.awt.event.WindowEvent e)
                         {
-                        	String algo = "";
-                        	if(Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString() != null)
-                        		algo = Wrapper.getGUI().getAlgoCombobox().getSelectedItem().toString();
-                        		
-                        	String poolURL = Wrapper.getGUI().getPoolURLField().getText();
-                        	String username = Wrapper.getGUI().getUsernameField().getText();
-                        	String password = Wrapper.getGUI().getPasswordField().getText();
-                        	String advCMD = Wrapper.getGUI().getAdvCMDField().getText();
-                        	
-                        	if(algo.isEmpty())
-                        		algo = "#";
-                        	if(poolURL.isEmpty())
-                        		poolURL = "stratum+tcp://";
-                        	if(username.isEmpty())
-                        		username = "#";
-                        	if(password.isEmpty())
-                        		password = "#";
-                        	if(advCMD.isEmpty())
-                        		advCMD = "#";
-
                         	Wrapper.stopMiner();
                     		Wrapper.clearFile("save.dat");
-                    		Wrapper.addToFile("save.dat",algo+";");
-                    		Wrapper.addToFile("save.dat",poolURL+";");
-                    		Wrapper.addToFile("save.dat",username+";");
-                    		Wrapper.addToFile("save.dat",password+";");
-                    		Wrapper.addToFile("save.dat",advCMD+";");
                     		
-                    		Wrapper.clearFile("settings.dat");
-                    		//Wrapper.addToFile("settings.dat",algo+";");
+                    		for(int k = 0; k < Wrapper.getAvailableConfigs().size(); k++)
+                    		{
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getConfigName()+";");
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getAlgo()+";");
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getUrl()+";");
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getUser()+";");
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getPass()+";");
+	                    		Wrapper.addToFile("save.dat",Wrapper.getAvailableConfigs().get(k).getAdv()+";");
+                    		}
                     		
                     		System.out.println("Saved run data");
                     		System.out.println("Goodbye");
