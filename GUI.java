@@ -569,6 +569,7 @@ public class GUI extends JFrame {
     		Dimension dim = Wrapper.getGUI().getSize();
 			cs.setLocation((int)(loc.getX()+dim.getWidth()/2-cs.getSize().width/2),(int)(loc.getY()+dim.getHeight()/2-cs.getSize().height/2));
 			cs.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			cs.setResizable(false);
     		cs.setVisible(true);
     	}
     	else
@@ -743,7 +744,7 @@ class ConfigSelector extends JFrame {
 
     private void SaveCurrentConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
     	String newName = "##"+JOptionPane.showInputDialog(this,"What would you like to name the current config?");
-    	if(newName != null && !newName.equals("null") && !newName.isEmpty())
+    	if(newName.equals("##null") || newName.equals("##") || newName.isEmpty())
     		newName = "Config "+(Wrapper.getAvailableConfigs().size()+1);
     	
     		String algo = "";

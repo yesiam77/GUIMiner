@@ -41,7 +41,7 @@ import javax.swing.event.HyperlinkListener;
 public class Wrapper {
 	
 	private static double version = 1.3;
-	private static boolean compileWithMiners = false;
+	private static boolean compileWithMiners = true;
 	private static String OS = "";
 	private static String homeDir = "";
 	private static String selectedMiner = "";
